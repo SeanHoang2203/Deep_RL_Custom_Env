@@ -191,8 +191,8 @@ def main(args_dict):
                                        args_dict['lambda'],\
                                        train_rewards[i],\
                                        train_vpred[i],\
-                                       train_vpred_next[i]))
-##                                       q_func_val[1:].squeeze()))
+#                                        train_vpred_next[i]))
+                                       q_func_val[1:].squeeze()))
                 train_obs[i] = []     
                 train_rewards[i] = []
                 train_actions[i] = []
@@ -240,15 +240,15 @@ def main(args_dict):
         dyna_model.train(samples[:,:(obs_size+act_size)],\
                          samples[:,(obs_size+act_size+1):-3],\
                          epochs=15)
-##        a, _ = policy.act(obs = samples[:,(obs_size+act_size+1):-3])
-##        with graph.as_default():
-##            set_session(session)
-##            q_targ = samples[:,-3].squeeze() * \
-##                     q_target.predict(np.hstack((samples[:,(obs_size+act_size+1):-3].squeeze(),\
-##                                                a.squeeze()))).squeeze()
-##        q_func.train(samples[:,:(obs_size+act_size)],\
-##                     samples[:,(obs_size+act_size)] + args_dict['gamma'] * q_targ,\
-##                     epochs=5)
+        a, _ = policy.act(obs = samples[:,(obs_size+act_size+1):-3])
+        with graph.as_default():
+            set_session(session)
+            q_targ = samples[:,-3].squeeze() * \
+                     q_target.predict(np.hstack((samples[:,(obs_size+act_size+1):-3].squeeze(),\
+                                                a.squeeze()))).squeeze()
+        q_func.train(samples[:,:(obs_size+act_size)],\
+                     samples[:,(obs_size+act_size)] + args_dict['gamma'] * q_targ,\
+                     epochs=5)
 
         print(experiences[0][indices].shape)
         summary = trainer.get_summary(obs=experiences[0][indices],
